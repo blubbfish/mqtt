@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2013, 2014 Paolo Patierno
 
 All rights reserved. This program and the accompanying materials
@@ -14,17 +14,19 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-using System;
-
-namespace uPLibrary.Networking.M2Mqtt.Exceptions
+namespace uPLibrary.Networking.M2Mqtt.Session
 {
     /// <summary>
-    /// Connection to the broker exception
+    /// MQTT Client Session
     /// </summary>
-    public class MqttConnectionException : Exception
+    public class MqttClientSession : MqttSession
     {
-        public MqttConnectionException(string message, Exception innerException)
-            : base(message, innerException)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="clientId">Client Id to create session</param>
+        public MqttClientSession(string clientId)
+            : base(clientId)
         {
         }
     }

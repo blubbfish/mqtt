@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2013, 2014 Paolo Patierno
 
 All rights reserved. This program and the accompanying materials
@@ -14,18 +14,17 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-using System;
-
-namespace uPLibrary.Networking.M2Mqtt.Exceptions
+namespace uPLibrary.Networking.M2Mqtt
 {
     /// <summary>
-    /// Connection to the broker exception
+    /// Supported SSL/TLS protocol versions
     /// </summary>
-    public class MqttConnectionException : Exception
+    public enum MqttSslProtocols
     {
-        public MqttConnectionException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+        None,
+        SSLv3,
+        TLSv1_0,
+        TLSv1_1,
+        TLSv1_2
     }
 }

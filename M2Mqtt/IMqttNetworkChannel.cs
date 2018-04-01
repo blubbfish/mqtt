@@ -1,19 +1,17 @@
 ﻿/*
-M2Mqtt - MQTT Client Library for .Net
-Copyright (c) 2014, Paolo Patierno, All rights reserved.
+Copyright (c) 2013, 2014 Paolo Patierno
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 3.0 of the License, or (at your option) any later version.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+and Eclipse Distribution License v1.0 which accompany this distribution. 
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+The Eclipse Public License is available at 
+   http://www.eclipse.org/legal/epl-v10.html
+and the Eclipse Distribution License is available at 
+   http://www.eclipse.org/org/documents/edl-v10.php.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library.
+Contributors:
+   Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
 using System;
@@ -39,6 +37,14 @@ namespace uPLibrary.Networking.M2Mqtt
         int Receive(byte[] buffer);
 
         /// <summary>
+        /// Receive data from the network channel with a specified timeout
+        /// </summary>
+        /// <param name="buffer">Data buffer for receiving data</param>
+        /// <param name="timeout">Timeout on receiving (in milliseconds)</param>
+        /// <returns>Number of bytes received</returns>
+        int Receive(byte[] buffer, int timeout);
+
+        /// <summary>
         /// Send data on the network channel to the broker
         /// </summary>
         /// <param name="buffer">Data buffer to send</param>
@@ -54,5 +60,10 @@ namespace uPLibrary.Networking.M2Mqtt
         /// Connect to remote server
         /// </summary>
         void Connect();
+        
+        /// <summary>
+        /// Accept client connection
+        /// </summary>
+        void Accept();
     }
 }

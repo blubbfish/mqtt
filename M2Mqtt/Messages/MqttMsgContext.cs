@@ -1,19 +1,17 @@
 ﻿/*
-M2Mqtt - MQTT Client Library for .Net
-Copyright (c) 2014, Paolo Patierno, All rights reserved.
+Copyright (c) 2013, 2014 Paolo Patierno
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 3.0 of the License, or (at your option) any later version.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+and Eclipse Distribution License v1.0 which accompany this distribution. 
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+The Eclipse Public License is available at 
+   http://www.eclipse.org/legal/epl-v10.html
+and the Eclipse Distribution License is available at 
+   http://www.eclipse.org/org/documents/edl-v10.php.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library.
+Contributors:
+   Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
 using System;
@@ -50,6 +48,14 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         /// Attempt (for retry)
         /// </summary>
         public int Attempt { get; set; }
+
+        /// <summary>
+        /// Unique key
+        /// </summary>
+        public string Key 
+        {
+            get { return this.Flow + "_" + this.Message.MessageId; }
+        }
     }
 
     /// <summary>
@@ -127,6 +133,18 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         /// QOS = 1, PUBLISH received, send PUBACK
         /// </summary>
         SendPuback,
+
+        // [v3.1.1] SUBSCRIBE isn't "officially" QOS = 1
+        /// <summary>
+        /// Send SUBSCRIBE message
+        /// </summary>
+        SendSubscribe,
+
+        // [v3.1.1] UNSUBSCRIBE isn't "officially" QOS = 1
+        /// <summary>
+        /// Send UNSUBSCRIBE message
+        /// </summary>
+        SendUnsubscribe,
 
         /// <summary>
         /// (QOS = 1), SUBSCRIBE sent, wait for SUBACK

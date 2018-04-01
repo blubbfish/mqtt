@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2013, 2014 Paolo Patierno
 
 All rights reserved. This program and the accompanying materials
@@ -14,18 +14,12 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-using System;
-
-namespace uPLibrary.Networking.M2Mqtt.Exceptions
+namespace uPLibrary.Networking.M2Mqtt.Internal
 {
     /// <summary>
-    /// Connection to the broker exception
+    /// Generic internal event for dispatching
     /// </summary>
-    public class MqttConnectionException : Exception
+    public abstract class InternalEvent
     {
-        public MqttConnectionException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
     }
 }

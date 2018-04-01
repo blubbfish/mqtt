@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2013, 2014 Paolo Patierno
 
 All rights reserved. This program and the accompanying materials
@@ -14,18 +14,14 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-using System;
+using System.Collections.Generic;
 
-namespace uPLibrary.Networking.M2Mqtt.Exceptions
+namespace uPLibrary.Networking.M2Mqtt
 {
     /// <summary>
-    /// Connection to the broker exception
+    /// Wrapper Queue class for generic Queue<T> (the only available in WinRT)
     /// </summary>
-    public class MqttConnectionException : Exception
+    public class Queue : Queue<object>
     {
-        public MqttConnectionException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
     }
 }

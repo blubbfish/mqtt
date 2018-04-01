@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2013, 2014 Paolo Patierno
 
 All rights reserved. This program and the accompanying materials
@@ -14,29 +14,38 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-using System;
+using uPLibrary.Networking.M2Mqtt.Messages;
 
-namespace uPLibrary.Networking.M2Mqtt.Exceptions
+namespace uPLibrary.Networking.M2Mqtt.Internal
 {
     /// <summary>
-    /// Exception due to error communication with broker on socket
+    /// Internal event with a message
     /// </summary>
-    public class MqttCommunicationException : Exception
+    public class MsgInternalEvent : InternalEvent
     {
+        #region Properties ...
+
         /// <summary>
-        /// Default constructor
+        /// Related message
         /// </summary>
-        public MqttCommunicationException()
+        public MqttMsgBase Message
         {
+            get { return this.msg; }
+            set { this.msg = value; }
         }
+
+        #endregion
+
+        // related message
+        protected MqttMsgBase msg;
 
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="e">Inner Exception</param>
-        public MqttCommunicationException(Exception e)
-            : base(String.Empty, e)
+        /// <param name="msg">Related message</param>
+        public MsgInternalEvent(MqttMsgBase msg)
         {
+            this.msg = msg;
         }
     }
 }

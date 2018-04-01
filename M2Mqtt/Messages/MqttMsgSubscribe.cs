@@ -1,19 +1,17 @@
 /*
-M2Mqtt - MQTT Client Library for .Net
-Copyright (c) 2014, Paolo Patierno, All rights reserved.
+Copyright (c) 2013, 2014 Paolo Patierno
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 3.0 of the License, or (at your option) any later version.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+and Eclipse Distribution License v1.0 which accompany this distribution. 
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+The Eclipse Public License is available at 
+   http://www.eclipse.org/legal/epl-v10.html
+and the Eclipse Distribution License is available at 
+   http://www.eclipse.org/org/documents/edl-v10.php.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library.
+Contributors:
+   Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
 using System;
@@ -52,24 +50,13 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             set { this.qosLevels = value; }
         }
 
-        /// <summary>
-        /// Message identifier
-        /// </summary>
-        public ushort MessageId
-        {
-            get { return this.messageId; }
-            set { this.messageId = value; }
-        }
-
         #endregion
 
         // topics to subscribe
         string[] topics;
         // QOS levels related to topics
         byte[] qosLevels;
-        // message identifier
-        ushort messageId;
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
@@ -90,7 +77,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             this.topics = topics;
             this.qosLevels = qosLevels;
 
-            // SUBSCRIBE message uses QoS Level 1
+            // SUBSCRIBE message uses QoS Level 1 (not "officially" in 3.1.1)
             this.qosLevel = QOS_LEVEL_AT_LEAST_ONCE;
         }
 
@@ -98,15 +85,23 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         /// Parse bytes for a SUBSCRIBE message
         /// </summary>
         /// <param name="fixedHeaderFirstByte">First fixed header byte</param>
+        /// <param name="protocolVersion">Protocol Version</param>
         /// <param name="channel">Channel connected to the broker</param>
         /// <returns>SUBSCRIBE message instance</returns>
-        public static MqttMsgSubscribe Parse(byte fixedHeaderFirstByte, IMqttNetworkChannel channel)
+        public static MqttMsgSubscribe Parse(byte fixedHeaderFirstByte, byte protocolVersion, IMqttNetworkChannel channel)
         {
             byte[] buffer;
             int index = 0;
             byte[] topicUtf8;
             int topicUtf8Length;
             MqttMsgSubscribe msg = new MqttMsgSubscribe();
+
+            if (protocolVersion == MqttMsgConnect.PROTOCOL_VERSION_V3_1_1)
+            {
+                // [v3.1.1] check flag bits
+                if ((fixedHeaderFirstByte & MSG_FLAG_BITS_MASK) != MQTT_MSG_SUBSCRIBE_FLAG_BITS)
+                    throw new MqttClientException(MqttClientErrorCode.InvalidFlagBits);
+            }
 
             // get remaining length and allocate buffer
             int remainingLength = MqttMsgBase.decodeRemainingLength(channel);
@@ -115,12 +110,17 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             // read bytes from socket...
             int received = channel.Receive(buffer);
 
-            // read QoS level from fixed header
-            msg.qosLevel = (byte)((fixedHeaderFirstByte & QOS_LEVEL_MASK) >> QOS_LEVEL_OFFSET);
-            // read DUP flag from fixed header
-            msg.dupFlag = (((fixedHeaderFirstByte & DUP_FLAG_MASK) >> DUP_FLAG_OFFSET) == 0x01);
-            // retain flag not used
-            msg.retain = false;
+            if (protocolVersion == MqttMsgConnect.PROTOCOL_VERSION_V3_1)
+            {
+                // only 3.1.0
+
+                // read QoS level from fixed header
+                msg.qosLevel = (byte)((fixedHeaderFirstByte & QOS_LEVEL_MASK) >> QOS_LEVEL_OFFSET);
+                // read DUP flag from fixed header
+                msg.dupFlag = (((fixedHeaderFirstByte & DUP_FLAG_MASK) >> DUP_FLAG_OFFSET) == 0x01);
+                // retain flag not used
+                msg.retain = false;
+            }
 
             // message id
             msg.messageId = (ushort)((buffer[index++] << 8) & 0xFF00);
@@ -165,7 +165,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             return msg;
         }
 
-        public override byte[] GetBytes()
+        public override byte[] GetBytes(byte protocolVersion)
         {
             int fixedHeaderSize = 0;
             int varHeaderSize = 0;
@@ -222,11 +222,16 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             buffer = new byte[fixedHeaderSize + varHeaderSize + payloadSize];
 
             // first fixed header byte
-            buffer[index] = (byte)((MQTT_MSG_SUBSCRIBE_TYPE << MSG_TYPE_OFFSET) |
+            if (protocolVersion == MqttMsgConnect.PROTOCOL_VERSION_V3_1_1)
+                buffer[index++] = (MQTT_MSG_SUBSCRIBE_TYPE << MSG_TYPE_OFFSET) | MQTT_MSG_SUBSCRIBE_FLAG_BITS; // [v.3.1.1]
+            else
+            {
+                buffer[index] = (byte)((MQTT_MSG_SUBSCRIBE_TYPE << MSG_TYPE_OFFSET) |
                                    (this.qosLevel << QOS_LEVEL_OFFSET));
-            buffer[index] |= this.dupFlag ? (byte)(1 << DUP_FLAG_OFFSET) : (byte)0x00;
-            index++;
-
+                buffer[index] |= this.dupFlag ? (byte)(1 << DUP_FLAG_OFFSET) : (byte)0x00;
+                index++;
+            }
+            
             // encode remaining length
             index = this.encodeRemainingLength(remainingLength, buffer, index);
 
@@ -250,6 +255,18 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             }
             
             return buffer;
+        }
+
+        public override string ToString()
+        {
+#if TRACE
+            return this.GetTraceString(
+                "SUBSCRIBE",
+                new object[] { "messageId", "topics", "qosLevels" },
+                new object[] { this.messageId, this.topics, this.qosLevels });
+#else
+            return base.ToString();
+#endif
         }
     }
 }

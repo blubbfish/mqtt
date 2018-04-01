@@ -1,22 +1,21 @@
 /*
-M2Mqtt - MQTT Client Library for .Net
-Copyright (c) 2014, Paolo Patierno, All rights reserved.
+Copyright (c) 2013, 2014 Paolo Patierno
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 3.0 of the License, or (at your option) any later version.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+and Eclipse Distribution License v1.0 which accompany this distribution. 
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+The Eclipse Public License is available at 
+   http://www.eclipse.org/legal/epl-v10.html
+and the Eclipse Distribution License is available at 
+   http://www.eclipse.org/org/documents/edl-v10.php.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library.
+Contributors:
+   Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
 using System;
+using uPLibrary.Networking.M2Mqtt.Exceptions;
 
 namespace uPLibrary.Networking.M2Mqtt.Messages
 {
@@ -26,16 +25,6 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
     public class MqttMsgSuback : MqttMsgBase
     {
         #region Properties...
-
-        /// <summary>
-        /// Message identifier for the subscribe message
-        /// that is acknowledged
-        /// </summary>
-        public ushort MessageId
-        {
-            get { return this.messageId; }
-            set { this.messageId = value; }
-        }
 
         /// <summary>
         /// List of granted QOS Levels
@@ -48,8 +37,6 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
 
         #endregion
 
-        // message identifier
-        private ushort messageId;
         // granted QOS levels
         byte[] grantedQosLevels;
 
@@ -65,13 +52,21 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
         /// Parse bytes for a SUBACK message
         /// </summary>
         /// <param name="fixedHeaderFirstByte">First fixed header byte</param>
+        /// <param name="protocolVersion">Protocol Version</param>
         /// <param name="channel">Channel connected to the broker</param>
         /// <returns>SUBACK message instance</returns>
-        public static MqttMsgSuback Parse(byte fixedHeaderFirstByte, IMqttNetworkChannel channel)
+        public static MqttMsgSuback Parse(byte fixedHeaderFirstByte, byte protocolVersion, IMqttNetworkChannel channel)
         {
             byte[] buffer;
             int index = 0;
             MqttMsgSuback msg = new MqttMsgSuback();
+
+            if (protocolVersion == MqttMsgConnect.PROTOCOL_VERSION_V3_1_1)
+            {
+                // [v3.1.1] check flag bits
+                if ((fixedHeaderFirstByte & MSG_FLAG_BITS_MASK) != MQTT_MSG_SUBACK_FLAG_BITS)
+                    throw new MqttClientException(MqttClientErrorCode.InvalidFlagBits);
+            }
 
             // get remaining length and allocate buffer
             int remainingLength = MqttMsgBase.decodeRemainingLength(channel);
@@ -95,7 +90,7 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             return msg;
         }
 
-        public override byte[] GetBytes()
+        public override byte[] GetBytes(byte protocolVersion)
         {
             int fixedHeaderSize = 0;
             int varHeaderSize = 0;
@@ -131,9 +126,11 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             buffer = new byte[fixedHeaderSize + varHeaderSize + payloadSize];
 
             // first fixed header byte
-            buffer[index] = (byte)(MQTT_MSG_SUBACK_TYPE << MSG_TYPE_OFFSET);
-            index++;
-
+            if (protocolVersion == MqttMsgConnect.PROTOCOL_VERSION_V3_1_1)
+                buffer[index++] = (MQTT_MSG_SUBACK_TYPE << MSG_TYPE_OFFSET) | MQTT_MSG_SUBACK_FLAG_BITS; // [v.3.1.1]
+            else
+                buffer[index++] = (byte)(MQTT_MSG_SUBACK_TYPE << MSG_TYPE_OFFSET);
+            
             // encode remaining length
             index = this.encodeRemainingLength(remainingLength, buffer, index);
 
@@ -148,6 +145,18 @@ namespace uPLibrary.Networking.M2Mqtt.Messages
             }
 
             return buffer;
+        }
+
+        public override string ToString()
+        {
+#if TRACE
+            return this.GetTraceString(
+                "SUBACK",
+                new object[] { "messageId", "grantedQosLevels" },
+                new object[] { this.messageId, this.grantedQosLevels });
+#else
+            return base.ToString();
+#endif
         }
     }
 }

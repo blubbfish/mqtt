@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2013, 2014 Paolo Patierno
 
 All rights reserved. This program and the accompanying materials
@@ -14,18 +14,23 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-using System;
+using System.Threading;
+using System.Threading.Tasks;
 
-namespace uPLibrary.Networking.M2Mqtt.Exceptions
+namespace uPLibrary.Networking.M2Mqtt
 {
     /// <summary>
-    /// Connection to the broker exception
+    /// Support methods fos specific framework
     /// </summary>
-    public class MqttConnectionException : Exception
+    public class Fx
     {
-        public MqttConnectionException(string message, Exception innerException)
-            : base(message, innerException)
+
+        public delegate void ThreadStart();
+        public static void StartThread(ThreadStart threadStart)
         {
+            Task.Factory.StartNew(o => ((ThreadStart)o)(), threadStart);
         }
+
+        public static void SleepThread(int millisecondsTimeout) { Task.Delay(millisecondsTimeout).RunSynchronously(); }
     }
 }

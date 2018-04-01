@@ -1,19 +1,17 @@
 ﻿/*
-M2Mqtt - MQTT Client Library for .Net
-Copyright (c) 2014, Paolo Patierno, All rights reserved.
+Copyright (c) 2013, 2014 Paolo Patierno
 
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 3.0 of the License, or (at your option) any later version.
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+and Eclipse Distribution License v1.0 which accompany this distribution. 
 
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
+The Eclipse Public License is available at 
+   http://www.eclipse.org/legal/epl-v10.html
+and the Eclipse Distribution License is available at 
+   http://www.eclipse.org/org/documents/edl-v10.php.
 
-You should have received a copy of the GNU Lesser General Public
-License along with this library.
+Contributors:
+   Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
 namespace uPLibrary.Networking.M2Mqtt
@@ -27,14 +25,16 @@ namespace uPLibrary.Networking.M2Mqtt
         public const int MQTT_BROKER_DEFAULT_PORT = 1883;
         public const int MQTT_BROKER_DEFAULT_SSL_PORT = 8883;
         // default timeout on receiving from client
-        public const int MQTT_DEFAULT_TIMEOUT = 25000;
+        public const int MQTT_DEFAULT_TIMEOUT = 30000;
         // max publish, subscribe and unsubscribe retry for QoS Level 1 or 2
         public const int MQTT_ATTEMPTS_RETRY = 3;
         // delay for retry publish, subscribe and unsubscribe for QoS Level 1 or 2
         public const int MQTT_DELAY_RETRY = 10000;
         // broker need to receive the first message (CONNECT)
         // within a reasonable amount of time after TCP/IP connection 
-        public const int MQTT_CONNECT_TIMEOUT = 25000;
+        public const int MQTT_CONNECT_TIMEOUT = 30000;
+        // default inflight queue size
+        public const int MQTT_MAX_INFLIGHT_QUEUE_SIZE = int.MaxValue;
 
         /// <summary>
         /// Listening connection port
@@ -67,6 +67,11 @@ namespace uPLibrary.Networking.M2Mqtt
         public int DelayOnRetry { get; internal set; }
 
         /// <summary>
+        /// Inflight queue size
+        /// </summary>
+        public int InflightQueueSize { get; set; }
+        
+        /// <summary>
         /// Singleton instance of settings
         /// </summary>
         public static MqttSettings Instance
@@ -93,6 +98,7 @@ namespace uPLibrary.Networking.M2Mqtt
             this.AttemptsOnRetry = MQTT_ATTEMPTS_RETRY;
             this.DelayOnRetry = MQTT_DELAY_RETRY;
             this.TimeoutOnConnection = MQTT_CONNECT_TIMEOUT;
+            this.InflightQueueSize = MQTT_MAX_INFLIGHT_QUEUE_SIZE;
         }
     }
 }
