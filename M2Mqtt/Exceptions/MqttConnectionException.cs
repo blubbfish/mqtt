@@ -16,16 +16,13 @@ Contributors:
 
 using System;
 
-namespace uPLibrary.Networking.M2Mqtt.Exceptions
-{
-    /// <summary>
-    /// Connection to the broker exception
-    /// </summary>
-    public class MqttConnectionException : Exception
-    {
-        public MqttConnectionException(string message, Exception innerException)
-            : base(message, innerException)
-        {
-        }
+namespace uPLibrary.Networking.M2Mqtt.Exceptions {
+  /// <summary>
+  /// Connection to the broker exception
+  /// </summary>
+  public class MqttConnectionException : Exception {
+    public MqttConnectionException(String message, Exception innerException)
+        : base(message, innerException) {
     }
+  }
 }

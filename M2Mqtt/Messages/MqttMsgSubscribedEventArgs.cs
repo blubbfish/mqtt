@@ -14,55 +14,41 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-#if (!MF_FRAMEWORK_VERSION_V4_2 && !MF_FRAMEWORK_VERSION_V4_3)
+#if !MF_FRAMEWORK_VERSION_V4_2 && !MF_FRAMEWORK_VERSION_V4_3
 using System;
 #else
 using Microsoft.SPOT;
 #endif
 
-namespace uPLibrary.Networking.M2Mqtt.Messages
-{
+namespace uPLibrary.Networking.M2Mqtt.Messages {
+  /// <summary>
+  /// Event Args class for subscribed topics
+  /// </summary>
+  public class MqttMsgSubscribedEventArgs : EventArgs {
+    #region Properties...
+
     /// <summary>
-    /// Event Args class for subscribed topics
+    /// Message identifier
     /// </summary>
-    public class MqttMsgSubscribedEventArgs : EventArgs
-    {
-        #region Properties...
+    public UInt16 MessageId { get; internal set; }
 
-        /// <summary>
-        /// Message identifier
-        /// </summary>
-        public ushort MessageId
-        {
-            get { return this.messageId; }
-            internal set { this.messageId = value; }
-        }
+    /// <summary>
+    /// List of granted QOS Levels
+    /// </summary>
+    public Byte[] GrantedQoSLevels { get; internal set; }
 
-        /// <summary>
-        /// List of granted QOS Levels
-        /// </summary>
-        public byte[] GrantedQoSLevels
-        {
-            get { return this.grantedQosLevels; }
-            internal set { this.grantedQosLevels = value; }
-        }
+    #endregion
 
-        #endregion
+    // message identifier
 
-        // message identifier
-        ushort messageId;
-        // granted QOS levels
-        byte[] grantedQosLevels;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="messageId">Message identifier for subscribed topics</param>
-        /// <param name="grantedQosLevels">List of granted QOS Levels</param>
-        public MqttMsgSubscribedEventArgs(ushort messageId, byte[] grantedQosLevels)
-        {
-            this.messageId = messageId;
-            this.grantedQosLevels = grantedQosLevels;
-        }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="messageId">Message identifier for subscribed topics</param>
+    /// <param name="grantedQosLevels">List of granted QOS Levels</param>
+    public MqttMsgSubscribedEventArgs(UInt16 messageId, Byte[] grantedQosLevels) {
+      this.MessageId = messageId;
+      this.GrantedQoSLevels = grantedQosLevels;
     }
+  }
 }

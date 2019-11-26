@@ -14,50 +14,46 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
+using System;
 using System.Collections;
 
-namespace uPLibrary.Networking.M2Mqtt.Session
-{
+namespace uPLibrary.Networking.M2Mqtt.Session {
+  /// <summary>
+  /// MQTT Session base class
+  /// </summary>
+  public abstract class MqttSession {
     /// <summary>
-    /// MQTT Session base class
+    /// Client Id
     /// </summary>
-    public abstract class MqttSession
-    {
-        /// <summary>
-        /// Client Id
-        /// </summary>
-        public string ClientId { get; set; }
+    public String ClientId { get; set; }
 
-        /// <summary>
-        /// Messages inflight during session
-        /// </summary>
-        public Hashtable InflightMessages { get; set; }
+    /// <summary>
+    /// Messages inflight during session
+    /// </summary>
+    public Hashtable InflightMessages { get; set; }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        public MqttSession()
-            : this(null)
-        {
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="clientId">Client Id to create session</param>
-        public MqttSession(string clientId)
-        {
-            this.ClientId = clientId;
-            this.InflightMessages = new Hashtable();
-        }
-
-        /// <summary>
-        /// Clean session
-        /// </summary>
-        public virtual void Clear()
-        {
-            this.ClientId = null;
-            this.InflightMessages.Clear();
-        }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    public MqttSession()
+        : this(null) {
     }
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="clientId">Client Id to create session</param>
+    public MqttSession(String clientId) {
+      this.ClientId = clientId;
+      this.InflightMessages = new Hashtable();
+    }
+
+    /// <summary>
+    /// Clean session
+    /// </summary>
+    public virtual void Clear() {
+      this.ClientId = null;
+      this.InflightMessages.Clear();
+    }
+  }
 }

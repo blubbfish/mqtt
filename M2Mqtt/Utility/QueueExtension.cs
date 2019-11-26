@@ -17,34 +17,31 @@ Contributors:
 using System;
 using System.Collections;
 
-namespace uPLibrary.Networking.M2Mqtt.Utility
-{
+namespace uPLibrary.Networking.M2Mqtt.Utility {
+  /// <summary>
+  /// Extension class for a Queue
+  /// </summary>
+  internal static class QueueExtension {
     /// <summary>
-    /// Extension class for a Queue
+    /// Predicate for searching inside a queue
     /// </summary>
-    internal static class QueueExtension
-    {
-        /// <summary>
-        /// Predicate for searching inside a queue
-        /// </summary>
-        /// <param name="item">Item of the queue</param>
-        /// <returns>Result of predicate</returns>
-        internal delegate bool QueuePredicate(object item);
+    /// <param name="item">Item of the queue</param>
+    /// <returns>Result of predicate</returns>
+    internal delegate Boolean QueuePredicate(Object item);
 
-        /// <summary>
-        /// Get (without removing) an item from queue based on predicate
-        /// </summary>
-        /// <param name="queue">Queue in which to search</param>
-        /// <param name="predicate">Predicate to verify to get item</param>
-        /// <returns>Item matches the predicate</returns>
-        internal static object Get(Queue queue, QueuePredicate predicate)
-        {
-            foreach (var item in queue)
-            {
-                if (predicate(item))
-                    return item;
-            }
-            return null;
+    /// <summary>
+    /// Get (without removing) an item from queue based on predicate
+    /// </summary>
+    /// <param name="queue">Queue in which to search</param>
+    /// <param name="predicate">Predicate to verify to get item</param>
+    /// <returns>Item matches the predicate</returns>
+    internal static Object Get(Queue queue, QueuePredicate predicate) {
+      foreach (Object item in queue) {
+        if (predicate(item)) {
+          return item;
         }
+      }
+      return null;
     }
+  }
 }

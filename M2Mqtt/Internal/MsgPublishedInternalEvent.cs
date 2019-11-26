@@ -14,40 +14,31 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
+using System;
 using uPLibrary.Networking.M2Mqtt.Messages;
 
-namespace uPLibrary.Networking.M2Mqtt.Internal
-{
+namespace uPLibrary.Networking.M2Mqtt.Internal {
+  /// <summary>
+  /// Internal event for a published message
+  /// </summary>
+  public class MsgPublishedInternalEvent : MsgInternalEvent {
+    #region Properties...
+
     /// <summary>
-    /// Internal event for a published message
+    /// Message published (or failed due to retries)
     /// </summary>
-    public class MsgPublishedInternalEvent : MsgInternalEvent
-    {
-        #region Properties...
+    public Boolean IsPublished { get; internal set; }
 
-        /// <summary>
-        /// Message published (or failed due to retries)
-        /// </summary>
-        public bool IsPublished
-        {
-            get { return this.isPublished; }
-            internal set { this.isPublished = value; }
-        }
+    #endregion
 
-        #endregion
+    // published flag
 
-        // published flag
-        bool isPublished;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="msg">Message published</param>
-        /// <param name="isPublished">Publish flag</param>
-        public MsgPublishedInternalEvent(MqttMsgBase msg, bool isPublished) 
-            : base(msg)
-        {
-            this.isPublished = isPublished;
-        }
-    }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="msg">Message published</param>
+    /// <param name="isPublished">Publish flag</param>
+    public MsgPublishedInternalEvent(MqttMsgBase msg, Boolean isPublished)
+        : base(msg) => this.IsPublished = isPublished;
+  }
 }

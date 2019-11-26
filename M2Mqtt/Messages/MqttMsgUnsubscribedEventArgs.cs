@@ -14,42 +14,32 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-#if (!MF_FRAMEWORK_VERSION_V4_2 && !MF_FRAMEWORK_VERSION_V4_3)
+#if !MF_FRAMEWORK_VERSION_V4_2 && !MF_FRAMEWORK_VERSION_V4_3
 using System;
 #else
 using Microsoft.SPOT;
 #endif
 
-namespace uPLibrary.Networking.M2Mqtt.Messages
-{
+namespace uPLibrary.Networking.M2Mqtt.Messages {
+  /// <summary>
+  /// Event Args class for unsubscribed topic
+  /// </summary>
+  public class MqttMsgUnsubscribedEventArgs : EventArgs {
+    #region Properties...
+
     /// <summary>
-    /// Event Args class for unsubscribed topic
+    /// Message identifier
     /// </summary>
-    public class MqttMsgUnsubscribedEventArgs : EventArgs
-    {
-        #region Properties...
+    public UInt16 MessageId { get; internal set; }
 
-        /// <summary>
-        /// Message identifier
-        /// </summary>
-        public ushort MessageId
-        {
-            get { return this.messageId; }
-            internal set { this.messageId = value; }
-        }
+    #endregion
 
-        #endregion
+    // message identifier
 
-        // message identifier
-        ushort messageId;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="messageId">Message identifier for unsubscribed topic</param>
-        public MqttMsgUnsubscribedEventArgs(ushort messageId)
-        {
-            this.messageId = messageId;
-        }
-    }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="messageId">Message identifier for unsubscribed topic</param>
+    public MqttMsgUnsubscribedEventArgs(UInt16 messageId) => this.MessageId = messageId;
+  }
 }

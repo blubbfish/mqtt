@@ -13,7 +13,7 @@ and the Eclipse Distribution License is available at
 Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
-
+#if !NETCOREAPP
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,3 +34,4 @@ namespace uPLibrary.Networking.M2Mqtt
         public static void SleepThread(int millisecondsTimeout) { Task.Delay(millisecondsTimeout).RunSynchronously(); }
     }
 }
+#endif

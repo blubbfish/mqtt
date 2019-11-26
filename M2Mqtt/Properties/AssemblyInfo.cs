@@ -13,7 +13,7 @@ and the Eclipse Distribution License is available at
 Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
-
+#if !NETCOREAPP
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -41,4 +41,5 @@ using System.Runtime.InteropServices;
 // to avoid compilation error (AssemblyFileVersionAttribute doesn't exist) under .Net CF 3.5
 #if !WindowsCE
 [assembly: AssemblyFileVersion("4.3.0.0")]
+#endif
 #endif

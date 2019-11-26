@@ -14,20 +14,18 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-namespace uPLibrary.Networking.M2Mqtt.Session
-{
+using System;
+
+namespace uPLibrary.Networking.M2Mqtt.Session {
+  /// <summary>
+  /// MQTT Client Session
+  /// </summary>
+  public class MqttClientSession : MqttSession {
     /// <summary>
-    /// MQTT Client Session
+    /// Constructor
     /// </summary>
-    public class MqttClientSession : MqttSession
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="clientId">Client Id to create session</param>
-        public MqttClientSession(string clientId)
-            : base(clientId)
-        {
-        }
+    /// <param name="clientId">Client Id to create session</param>
+    public MqttClientSession(String clientId) : base(clientId) {
     }
+  }
 }

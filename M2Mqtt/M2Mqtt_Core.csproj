@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <AssemblyName>M2Mqtt</AssemblyName>
+    <RootNamespace>uPLibrary.Networking.M2Mqtt</RootNamespace>
+    <Description>MQTT Client Library for M2M communication</Description>
+    <Authors>Paolo Patierno</Authors>
+    <Company>Paolo Patierno</Company>
+    <Copyright>Copyright © Paolo Patierno 2014</Copyright>
+    <Version>4.3.0</Version>
+    <AssemblyVersion>4.3.0</AssemblyVersion>
+    <FileVersion>4.3.0</FileVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;SSL</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;SSL</DefineConstants>
+  </PropertyGroup>
+
+</Project>

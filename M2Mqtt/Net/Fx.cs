@@ -14,23 +14,16 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
+using System;
 using System.Threading;
 
-namespace uPLibrary.Networking.M2Mqtt
-{
-    /// <summary>
-    /// Support methods fos specific framework
-    /// </summary>
-    public class Fx
-    {
-        public static void StartThread(ThreadStart threadStart)
-        {
-            new Thread(threadStart).Start();
-        }
+namespace uPLibrary.Networking.M2Mqtt {
+  /// <summary>
+  /// Support methods fos specific framework
+  /// </summary>
+  public class Fx {
+    public static void StartThread(ThreadStart threadStart) => new Thread(threadStart).Start();
 
-        public static void SleepThread(int millisecondsTimeout)
-        {
-            Thread.Sleep(millisecondsTimeout);
-        }
-    }
+    public static void SleepThread(Int32 millisecondsTimeout) => Thread.Sleep(millisecondsTimeout);
+  }
 }

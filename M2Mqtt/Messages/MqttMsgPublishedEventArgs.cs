@@ -14,65 +14,49 @@ Contributors:
    Paolo Patierno - initial API and implementation and/or initial documentation
 */
 
-#if (!MF_FRAMEWORK_VERSION_V4_2 && !MF_FRAMEWORK_VERSION_V4_3)
+#if !MF_FRAMEWORK_VERSION_V4_2 && !MF_FRAMEWORK_VERSION_V4_3
 using System;
 #else
 using Microsoft.SPOT;
 #endif
 
-namespace uPLibrary.Networking.M2Mqtt.Messages
-{
+namespace uPLibrary.Networking.M2Mqtt.Messages {
+  /// <summary>
+  /// Event Args class for published message
+  /// </summary>
+  public class MqttMsgPublishedEventArgs : EventArgs {
+    #region Properties...
+
     /// <summary>
-    /// Event Args class for published message
+    /// Message identifier
     /// </summary>
-    public class MqttMsgPublishedEventArgs : EventArgs
-    {
-        #region Properties...
+    public UInt16 MessageId { get; internal set; }
 
-        /// <summary>
-        /// Message identifier
-        /// </summary>
-        public ushort MessageId
-        {
-            get { return this.messageId; }
-            internal set { this.messageId = value; }
-        }
+    /// <summary>
+    /// Message published (or failed due to retries)
+    /// </summary>
+    public Boolean IsPublished { get; internal set; }
 
-        /// <summary>
-        /// Message published (or failed due to retries)
-        /// </summary>
-        public bool IsPublished
-        {
-            get { return this.isPublished; }
-            internal set { this.isPublished = value; }
-        }
+    #endregion
 
-        #endregion
+    // message identifier
 
-        // message identifier
-        ushort messageId;
-
-        // published flag
-        bool isPublished;
-
-        /// <summary>
-        /// Constructor (published message)
-        /// </summary>
-        /// <param name="messageId">Message identifier published</param>
-        public MqttMsgPublishedEventArgs(ushort messageId) 
-            : this(messageId, true) 
-        { 
-        }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="messageId">Message identifier</param>
-        /// <param name="isPublished">Publish flag</param>
-        public MqttMsgPublishedEventArgs(ushort messageId, bool isPublished)
-        {
-            this.messageId = messageId;
-            this.isPublished = isPublished;
-        }
+    /// <summary>
+    /// Constructor (published message)
+    /// </summary>
+    /// <param name="messageId">Message identifier published</param>
+    public MqttMsgPublishedEventArgs(UInt16 messageId)
+        : this(messageId, true) {
     }
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="messageId">Message identifier</param>
+    /// <param name="isPublished">Publish flag</param>
+    public MqttMsgPublishedEventArgs(UInt16 messageId, Boolean isPublished) {
+      this.MessageId = messageId;
+      this.IsPublished = isPublished;
+    }
+  }
 }

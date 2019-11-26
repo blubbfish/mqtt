@@ -16,117 +16,104 @@ Contributors:
 
 using System;
 
-namespace uPLibrary.Networking.M2Mqtt.Exceptions
-{
+namespace uPLibrary.Networking.M2Mqtt.Exceptions {
+  /// <summary>
+  /// MQTT client exception
+  /// </summary>
+  public class MqttClientException : Exception {
     /// <summary>
-    /// MQTT client exception
+    /// Constructor
     /// </summary>
-    public class MqttClientException : Exception
-    {
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="code">Error code</param>
-        public MqttClientException(MqttClientErrorCode errorCode)
-        {
-            this.errorCode = errorCode;
-        }
-
-        // error code
-        private MqttClientErrorCode errorCode;
-
-        /// <summary>
-        /// Error code
-        /// </summary>
-        public MqttClientErrorCode ErrorCode
-        {
-            get { return this.errorCode; }
-            set { this.errorCode = value; }
-        }
-    }
+    /// <param name="code">Error code</param>
+    public MqttClientException(MqttClientErrorCode errorCode) => this.ErrorCode = errorCode;
 
     /// <summary>
-    /// MQTT client erroro code
+    /// Error code
     /// </summary>
-    public enum MqttClientErrorCode
-    {
-        /// <summary>
-        /// Will error (topic, message or QoS level)
-        /// </summary>
-        WillWrong = 1,
+    public MqttClientErrorCode ErrorCode { get; set; }
+  }
 
-        /// <summary>
-        /// Keep alive period too large
-        /// </summary>
-        KeepAliveWrong,
+  /// <summary>
+  /// MQTT client erroro code
+  /// </summary>
+  public enum MqttClientErrorCode {
+    /// <summary>
+    /// Will error (topic, message or QoS level)
+    /// </summary>
+    WillWrong = 1,
 
-        /// <summary>
-        /// Topic contains wildcards
-        /// </summary>
-        TopicWildcard,
+    /// <summary>
+    /// Keep alive period too large
+    /// </summary>
+    KeepAliveWrong,
 
-        /// <summary>
-        /// Topic length wrong
-        /// </summary>
-        TopicLength,
+    /// <summary>
+    /// Topic contains wildcards
+    /// </summary>
+    TopicWildcard,
 
-        /// <summary>
-        /// QoS level not allowed
-        /// </summary>
-        QosNotAllowed,
+    /// <summary>
+    /// Topic length wrong
+    /// </summary>
+    TopicLength,
 
-        /// <summary>
-        /// Topics list empty for subscribe
-        /// </summary>
-        TopicsEmpty,
+    /// <summary>
+    /// QoS level not allowed
+    /// </summary>
+    QosNotAllowed,
 
-        /// <summary>
-        /// Qos levels list empty for subscribe
-        /// </summary>
-        QosLevelsEmpty,
+    /// <summary>
+    /// Topics list empty for subscribe
+    /// </summary>
+    TopicsEmpty,
 
-        /// <summary>
-        /// Topics / Qos Levels not match in subscribe
-        /// </summary>
-        TopicsQosLevelsNotMatch,
+    /// <summary>
+    /// Qos levels list empty for subscribe
+    /// </summary>
+    QosLevelsEmpty,
 
-        /// <summary>
-        /// Wrong message from broker
-        /// </summary>
-        WrongBrokerMessage,
+    /// <summary>
+    /// Topics / Qos Levels not match in subscribe
+    /// </summary>
+    TopicsQosLevelsNotMatch,
 
-        /// <summary>
-        /// Wrong Message Id
-        /// </summary>
-        WrongMessageId,
+    /// <summary>
+    /// Wrong message from broker
+    /// </summary>
+    WrongBrokerMessage,
 
-        /// <summary>
-        /// Inflight queue is full
-        /// </summary>
-        InflightQueueFull,
+    /// <summary>
+    /// Wrong Message Id
+    /// </summary>
+    WrongMessageId,
 
-        // [v3.1.1]
-        /// <summary>
-        /// Invalid flag bits received 
-        /// </summary>
-        InvalidFlagBits,
+    /// <summary>
+    /// Inflight queue is full
+    /// </summary>
+    InflightQueueFull,
 
-        // [v3.1.1]
-        /// <summary>
-        /// Invalid connect flags received
-        /// </summary>
-        InvalidConnectFlags,
+    // [v3.1.1]
+    /// <summary>
+    /// Invalid flag bits received 
+    /// </summary>
+    InvalidFlagBits,
 
-        // [v3.1.1]
-        /// <summary>
-        /// Invalid client id
-        /// </summary>
-        InvalidClientId,
+    // [v3.1.1]
+    /// <summary>
+    /// Invalid connect flags received
+    /// </summary>
+    InvalidConnectFlags,
 
-        // [v3.1.1]
-        /// <summary>
-        /// Invalid protocol name
-        /// </summary>
-        InvalidProtocolName
-    }
+    // [v3.1.1]
+    /// <summary>
+    /// Invalid client id
+    /// </summary>
+    InvalidClientId,
+
+    // [v3.1.1]
+    /// <summary>
+    /// Invalid protocol name
+    /// </summary>
+    InvalidProtocolName
+  }
 }

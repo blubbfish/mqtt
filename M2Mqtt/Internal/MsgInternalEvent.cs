@@ -16,36 +16,26 @@ Contributors:
 
 using uPLibrary.Networking.M2Mqtt.Messages;
 
-namespace uPLibrary.Networking.M2Mqtt.Internal
-{
+namespace uPLibrary.Networking.M2Mqtt.Internal {
+  /// <summary>
+  /// Internal event with a message
+  /// </summary>
+  public class MsgInternalEvent : InternalEvent {
+    #region Properties ...
+
     /// <summary>
-    /// Internal event with a message
+    /// Related message
     /// </summary>
-    public class MsgInternalEvent : InternalEvent
-    {
-        #region Properties ...
+    public MqttMsgBase Message { get; set; }
 
-        /// <summary>
-        /// Related message
-        /// </summary>
-        public MqttMsgBase Message
-        {
-            get { return this.msg; }
-            set { this.msg = value; }
-        }
+    #endregion
 
-        #endregion
+    // related message
 
-        // related message
-        protected MqttMsgBase msg;
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="msg">Related message</param>
-        public MsgInternalEvent(MqttMsgBase msg)
-        {
-            this.msg = msg;
-        }
-    }
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="msg">Related message</param>
+    public MsgInternalEvent(MqttMsgBase msg) => this.Message = msg;
+  }
 }
