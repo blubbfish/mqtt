@@ -48,9 +48,10 @@ namespace uPLibrary.Networking.M2Mqtt {
     private Socket socket;
     // using SSL
     private readonly Boolean secure;
-
+#if MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3
     // CA certificate (on client)
     private readonly X509Certificate caCert;
+#endif
     // Server certificate (on broker)
     private readonly X509Certificate serverCert;
     // client certificate (on client)
@@ -197,7 +198,9 @@ namespace uPLibrary.Networking.M2Mqtt {
       this.RemoteIpAddress = remoteIpAddress;
       this.RemotePort = remotePort;
       this.secure = secure;
+#if MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3
       this.caCert = caCert;
+#endif
       this.clientCert = clientCert;
       this.sslProtocol = sslProtocol;
 #if !(MF_FRAMEWORK_VERSION_V4_2 || MF_FRAMEWORK_VERSION_V4_3 || COMPACT_FRAMEWORK)
